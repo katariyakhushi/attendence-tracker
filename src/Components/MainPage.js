@@ -1,17 +1,14 @@
-
 import React from 'react';
-import Sidebar from './Sidebar';
-import Topbar from './Topbar'; 
 import Table from './Table';
+import Topbar from "./Topbar";
 
 const MainPage = () => {
-  return (
-    <div>
-     
-      <Topbar />
-     < Table/>
-    </div>
-  );
+    return (
+        <div>
+            <Topbar/>
+            <Table/>
+        </div>
+    );
 };
 
 export default MainPage;
