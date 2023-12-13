@@ -7,93 +7,168 @@ import {
   TableHead,
   TableRow,
   Paper,
-  Button,
   Typography,
   Box,
+  Switch,
+  Stack,
+  InputAdornment,
+  Input,
+  IconButton,
 } from '@mui/material';
+import SearchIcon from '@mui/icons-material/Search';
 
 const AttendanceTracker = () => {
-  const [attendanceRecords, setAttendanceRecords] = useState([]);
-  const [swipeInTime, setSwipeInTime] = useState(null);
+  const initialData = Array.from({ length: 10 }, (_, index) => ({
+    userId: index + 1,
+    userName: `User ${index + 1}`,
+    isSwipedOut: false,
+    startTime: null,
+    endTime: null,
+  }));
 
-  const handleSwipeIn = () => {
+  const [attendanceRecords, setAttendanceRecords] = useState(initialData);
+
+  const handleSwitchChange = (index) => {
+    const updatedRecords = [...attendanceRecords];
     const currentDate = new Date();
-    setSwipeInTime(currentDate);
-  };
 
-  const handleSwipeOut = () => {
-    if (swipeInTime) {
-      const currentDate = new Date();
-      const newUserId = attendanceRecords.length + 1; // Incremental userId
-      const newUserName = `User ${newUserId}`; // Unique user name based on userId
-      const attendanceRecord = {
-        userId: newUserId,
-        userName: newUserName,
-        swipeInTime,
-        swipeOutTime: currentDate,
-        duration: calculateDuration(swipeInTime, currentDate),
-      };
-
-      setAttendanceRecords([...attendanceRecords, attendanceRecord]);
-      setSwipeInTime(null);
+    if (updatedRecords[index].isSwipedOut) {
+      updatedRecords[index].endTime = currentDate.toLocaleString();
+    } else {
+      updatedRecords[index].startTime = currentDate.toLocaleString();
     }
-  };
 
-  const calculateDuration = (start, end) => {
-    const diffInMilliseconds = end - start;
-    const hours = Math.floor(diffInMilliseconds / (60 * 60 * 1000));
-    const minutes = Math.floor((diffInMilliseconds % (60 * 60 * 1000)) / (60 * 1000));
-
-    return `${hours}h ${minutes}m`;
+    updatedRecords[index].isSwipedOut = !updatedRecords[index].isSwipedOut;
+    setAttendanceRecords(updatedRecords);
   };
 
   return (
     <Box display="flex" flexDirection="column" alignItems="center" marginTop={5}>
-      <Typography variant="h4">Attendance Tracker</Typography>
-      <Box marginY={2}>
-        {swipeInTime ? (
-          <>
-            <Typography variant="h6">Swipe In Time: {swipeInTime.toLocaleString()}</Typography>
-            <Button variant="contained" onClick={handleSwipeOut}>
-              Swipe Out
-            </Button>
-          </>
-        ) : (
-          <Button variant="contained" onClick={handleSwipeIn}>
-            Swipe In
-          </Button>
-        )}
-      </Box>
+      <Typography variant="h3" marginBottom="50px">
+        Attendance Tracker
+      </Typography>
 
-      {attendanceRecords.length > 0 && (
-        <Box width="70%">
+      <Box width="70%" marginBottom="100px">
+        <Box
+          display="flex"
+          justifyContent="space-between"
+          alignItems="center"
+          marginBottom={2}
+        >
           <Typography variant="h5">Attendance Details</Typography>
-          <TableContainer component={Paper}>
-            <Table>
-              <TableHead>
-                <TableRow>
-                  <TableCell>User Id</TableCell>
-                  <TableCell>User Name</TableCell>
-                  <TableCell>Swipe In Time</TableCell>
-                  <TableCell>Swipe Out Time</TableCell>
-                  <TableCell>Duration</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {attendanceRecords.map((record, index) => (
-                  <TableRow key={index}>
-                    <TableCell>{record.userId}</TableCell>
-                    <TableCell>{record.userName}</TableCell>
-                    <TableCell>{record.swipeInTime.toLocaleString()}</TableCell>
-                    <TableCell>{record.swipeOutTime.toLocaleString()}</TableCell>
-                    <TableCell>{record.duration}</TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
+
+          <Typography>
+            <Box display="flex" alignItems="center">
+              <Typography variant="h6" color="#555" marginRight="10px"></Typography>
+              <Input
+                placeholder="Search..."
+                startAdornment={
+                  <InputAdornment position="start">
+                    <IconButton>
+                      <SearchIcon />
+                    </IconButton>
+                  </InputAdornment>
+                }
+              />
+            </Box>
+          </Typography>
         </Box>
-      )}
+
+        <TableContainer
+          component={Paper}
+          sx={{
+            border: '1px solid #ddd',
+            borderRadius: '8px',
+            overflow: 'hidden',
+          }}
+        >
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell
+                  style={{
+                    fontWeight: 'bold',
+                    textAlign: 'center',
+                    borderBottom: '1px solid #ddd',
+                  }}
+                >
+                  User Id
+                </TableCell>
+                <TableCell
+                  style={{
+                    fontWeight: 'bold',
+                    textAlign: 'center',
+                    borderBottom: '1px solid #ddd',
+                  }}
+                >
+                  User Name
+                </TableCell>
+                <TableCell
+                  style={{
+                    fontWeight: 'bold',
+                    textAlign: 'center',
+                    borderBottom: '1px solid #ddd',
+                  }}
+                >
+                  Start Time
+                </TableCell>
+                <TableCell
+                  style={{
+                    fontWeight: 'bold',
+                    textAlign: 'center',
+                    borderBottom: '1px solid #ddd',
+                  }}
+                >
+                  End Time
+                </TableCell>
+                <TableCell
+                  style={{
+                    fontWeight: 'bold',
+                    textAlign: 'center',
+                    borderBottom: '1px solid #ddd',
+                  }}
+                >
+                  Action
+                </TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {attendanceRecords.map((record, index) => (
+                <TableRow key={record.userId}>
+                  <TableCell style={{ textAlign: 'center', borderBottom: '1px solid #ddd' }}>
+                    {record.userId}
+                  </TableCell>
+                  <TableCell style={{ textAlign: 'center', borderBottom: '1px solid #ddd' }}>
+                    {record.userName}
+                  </TableCell>
+                  <TableCell style={{ textAlign: 'center', borderBottom: '1px solid #ddd' }}>
+                    {record.startTime}
+                  </TableCell>
+                  <TableCell style={{ textAlign: 'center', borderBottom: '1px solid #ddd' }}>
+                    {record.endTime}
+                  </TableCell>
+                  <TableCell style={{ textAlign: 'center', borderBottom: '1px solid #ddd' }}>
+                    <Stack
+                      direction="row"
+                      spacing={1}
+                      alignItems="center"
+                      justifyContent="center"
+                    >
+                      <Typography>Off</Typography>
+                      <Switch
+                        checked={record.isSwipedOut || false}
+                        onChange={() => handleSwitchChange(index)}
+                        inputProps={{ 'aria-label': 'ant design' }}
+                      />
+                      <Typography>On</Typography>
+                    </Stack>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </Box>
     </Box>
   );
 };
