@@ -92,7 +92,7 @@ export default function Profile() {
             </Button>
             <Grid container justifyContent="flex-end">
               <Grid item>
-                <Link href="/" variant="body2">
+                <Link href="/" variant="body2" style={{textDecoration: 'none'}}>
                   Back to Home
                 </Link>
               </Grid>

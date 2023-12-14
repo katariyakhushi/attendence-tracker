@@ -97,6 +97,10 @@ export default function SignUp() {
                   label="Date of Birth"
                   name="DOB"
                   autoComplete="DOB"
+                  type="date"  // Set type to "date" for date input
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -108,15 +112,15 @@ export default function SignUp() {
                   type="password"
                   id="password"
                   autoComplete="new-password"
-                 
+
                 />
               </Grid>
               <Grid item xs={12}>
-  <Typography variant="body2" color="textSecondary">
-    Must be at least 8-20 digits
-  </Typography>
-</Grid>
-              
+                <Typography variant="body2" color="textSecondary">
+                  *Must be at least 8-20 digits
+                </Typography>
+              </Grid>
+
             </Grid>
             <Button
               type="submit"
@@ -135,7 +139,7 @@ export default function SignUp() {
             </Grid>
           </Box>
         </Box>
-       
+
       </Container>
     </ThemeProvider>
   );

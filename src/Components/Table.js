@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Table,
   TableBody,
@@ -14,8 +14,12 @@ import {
   InputAdornment,
   Input,
   IconButton,
+  TextField,
 } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
+import Pagination from '@mui/material/Pagination';
+import KeyboardDoubleArrowLeftSharpIcon from '@mui/icons-material/KeyboardDoubleArrowLeftSharp';
+import KeyboardDoubleArrowRightSharpIcon from '@mui/icons-material/KeyboardDoubleArrowRightSharp';
 
 const AttendanceTracker = () => {
   const initialData = Array.from({ length: 10 }, (_, index) => ({
@@ -27,6 +31,26 @@ const AttendanceTracker = () => {
   }));
 
   const [attendanceRecords, setAttendanceRecords] = useState(initialData);
+  const [counter, setCounter] = useState(0);
+  const [selectedDate, setSelectedDate] = useState(new Date());
+
+  const handleLeft = () => {
+    setCounter((prevCounter) => prevCounter + 1);
+    setSelectedDate((prevDate) => {
+      const newDate = new Date(prevDate);
+      newDate.setDate(prevDate.getDate() + 1);
+      return newDate;
+    });
+  };
+
+  const handleRight = () => {
+    setCounter((prevCounter) => prevCounter - 1);
+    setSelectedDate((prevDate) => {
+      const newDate = new Date(prevDate);
+      newDate.setDate(prevDate.getDate() - 1);
+      return newDate;
+    });
+  };
 
   const handleSwitchChange = (index) => {
     const updatedRecords = [...attendanceRecords];
@@ -47,7 +71,6 @@ const AttendanceTracker = () => {
       <Typography variant="h3" marginBottom="50px">
         Attendance Tracker
       </Typography>
-
       <Box width="70%" marginBottom="100px">
         <Box
           display="flex"
@@ -55,8 +78,33 @@ const AttendanceTracker = () => {
           alignItems="center"
           marginBottom={2}
         >
-          <Typography variant="h5">Attendance Details</Typography>
+          <Typography variant="h4" sx={{ fontWeight: 'bold' }}>
+            Attendance Details
+          </Typography>
+          <Box display="flex" alignItems="center">
+            <KeyboardDoubleArrowLeftSharpIcon
+              style={{ marginRight: '20px', cursor: 'pointer' }}
 
+              onClick={handleRight}
+            />
+            <TextField
+              required
+              fullWidth
+              id="attendanceDate"
+              label="Attendance Date"
+              name="attendanceDate"
+              type="date"
+              InputLabelProps={{
+                shrink: true,
+              }}
+              style={{ marginLeft: '20px' }}
+              value={selectedDate.toISOString().split('T')[0]}
+            />
+            <KeyboardDoubleArrowRightSharpIcon
+              style={{ marginLeft: '30px', cursor: 'pointer' }}
+              onClick={handleLeft}
+            />
+          </Box>
           <Typography>
             <Box display="flex" alignItems="center">
               <Typography variant="h6" color="#555" marginRight="10px"></Typography>
@@ -73,7 +121,6 @@ const AttendanceTracker = () => {
             </Box>
           </Typography>
         </Box>
-
         <TableContainer
           component={Paper}
           sx={{
@@ -92,7 +139,7 @@ const AttendanceTracker = () => {
                     borderBottom: '1px solid #ddd',
                   }}
                 >
-                  User Id
+                  Student Id
                 </TableCell>
                 <TableCell
                   style={{
@@ -101,7 +148,7 @@ const AttendanceTracker = () => {
                     borderBottom: '1px solid #ddd',
                   }}
                 >
-                  User Name
+                  Student Name
                 </TableCell>
                 <TableCell
                   style={{
@@ -167,6 +214,14 @@ const AttendanceTracker = () => {
               ))}
             </TableBody>
           </Table>
+          <Box display="flex" alignItems="center" justifyContent="center" mt="30px" mb="30px">
+            <Typography variant="h6" color="primary">Previous</Typography>
+            <Stack spacing={2} sx={{ marginLeft: '10px', marginRight: '10px' }}>
+              <Pagination count={10} variant="outlined" shape="rounded" color='primary' />
+            </Stack>
+
+            <Typography variant="h6" color="primary">Next</Typography>
+          </Box>
         </TableContainer>
       </Box>
     </Box>
