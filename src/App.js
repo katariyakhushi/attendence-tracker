@@ -10,7 +10,7 @@ import Selectbar from './Components/Selectbar';
 import Table from './Components/Table';
 import Password from './Components/Password';
 import Profile from './Components/Profile';
-
+import Footer from './Components/Footer';
 function App() {
     return (
         <Router>
@@ -21,9 +21,10 @@ function App() {
                 <Route path="/topbar" element={<Topbar/>}/>
                 <Route path="/sidebar" element={<Sidebar/>}/>
                 <Route path="/selectbar" element={<Selectbar/>}/>
-                <Route path="/Table" element={<Table/>}/>
+                <Route path="/table" element={<Table/>}/>
                 <Route path="/changePassword" element={<Password/>}/>
                 <Route path="/profile" element={<Profile/>}></Route>
+                <Route path="/footer" element={<Footer/>}></Route>
             </Routes>
         </Router>
     );

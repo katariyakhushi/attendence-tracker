@@ -71,7 +71,7 @@ const AttendanceTracker = () => {
       <Typography variant="h3" marginBottom="50px">
         Attendance Tracker
       </Typography>
-      <Box width="70%" marginBottom="100px">
+      <Box width="70%" marginBottom="50px">
         <Box
           display="flex"
           justifyContent="space-between"
