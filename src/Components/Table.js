@@ -22,7 +22,8 @@ import KeyboardDoubleArrowLeftSharpIcon from '@mui/icons-material/KeyboardDouble
 import KeyboardDoubleArrowRightSharpIcon from '@mui/icons-material/KeyboardDoubleArrowRightSharp';
 
 const AttendanceTracker = () => {
-  const initialData = Array.from({ length: 10 }, (_, index) => ({
+  const recordsPerPage = 10;
+  const initialData = Array.from({ length: 30 }, (_, index) => ({
     userId: index + 1,
     userName: `User ${index + 1}`,
     isSwipedOut: false,
@@ -31,9 +32,13 @@ const AttendanceTracker = () => {
   }));
 
   const [attendanceRecords, setAttendanceRecords] = useState(initialData);
+  const [currentPage, setCurrentPage] = useState(1);
+  const totalPages = Math.ceil(attendanceRecords.length / recordsPerPage);
+  const startIndex = (currentPage - 1) * recordsPerPage;
+  const endIndex = Math.min(startIndex + recordsPerPage, attendanceRecords.length);
+
   const [counter, setCounter] = useState(0);
   const [selectedDate, setSelectedDate] = useState(new Date());
-
   const handleLeft = () => {
     setCounter((prevCounter) => prevCounter + 1);
     setSelectedDate((prevDate) => {
@@ -84,7 +89,6 @@ const AttendanceTracker = () => {
           <Box display="flex" alignItems="center">
             <KeyboardDoubleArrowLeftSharpIcon
               style={{ marginRight: '20px', cursor: 'pointer' }}
-
               onClick={handleRight}
             />
             <TextField
@@ -98,7 +102,7 @@ const AttendanceTracker = () => {
                 shrink: true,
               }}
               style={{ marginLeft: '20px' }}
-              value={selectedDate.toISOString().split('T')[0]}
+            value={selectedDate.toISOString().split('T')[0]}
             />
             <KeyboardDoubleArrowRightSharpIcon
               style={{ marginLeft: '30px', cursor: 'pointer' }}
@@ -180,7 +184,7 @@ const AttendanceTracker = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {attendanceRecords.map((record, index) => (
+              {attendanceRecords.slice(startIndex, endIndex).map((record, index) => (
                 <TableRow key={record.userId}>
                   <TableCell style={{ textAlign: 'center', borderBottom: '1px solid #ddd' }}>
                     {record.userId}
@@ -215,12 +219,22 @@ const AttendanceTracker = () => {
             </TableBody>
           </Table>
           <Box display="flex" alignItems="center" justifyContent="center" mt="30px" mb="30px">
-            <Typography variant="h6" color="primary">Previous</Typography>
+            <Typography variant="h6" color="primary" onClick={handleLeft}>
+              Previous
+            </Typography>
             <Stack spacing={2} sx={{ marginLeft: '10px', marginRight: '10px' }}>
-              <Pagination count={10} variant="outlined" shape="rounded" color='primary' />
+              <Pagination
+                count={totalPages}
+                page={currentPage}
+                variant="outlined"
+                shape="rounded"
+                color="primary"
+                onChange={(event, value) => setCurrentPage(value)}
+              />
             </Stack>
-
-            <Typography variant="h6" color="primary">Next</Typography>
+            <Typography variant="h6" color="primary" onClick={handleRight}>
+              Next
+            </Typography>
           </Box>
         </TableContainer>
       </Box>
