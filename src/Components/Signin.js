@@ -16,11 +16,15 @@ import IconButton from '@mui/material/IconButton';
 import InputAdornment from '@mui/material/InputAdornment';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import {toast, ToastContainer} from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
+import {useNavigate} from "react-router-dom";
 
 const defaultTheme = createTheme();
 
 export default function SignIn() {
   const [showPassword, setShowPassword] = React.useState(false);
+  const navigate = useNavigate()
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -29,6 +33,25 @@ export default function SignIn() {
       Mobilenumber: data.get('Mobilenumber'),
       password: data.get('password'),
     });
+
+    //Check if mobile number and password match from localstorage
+    const number = data.get('Mobilenumber');
+    const password = data.get('password');
+
+    let actualPassword = localStorage.getItem(number)
+    console.log("actualPassword", actualPassword)
+    actualPassword = actualPassword ? JSON.parse(actualPassword).password : ""
+
+    if( actualPassword === password) {
+      toast.success("Login Successful")
+
+      setTimeout(() => {
+        navigate('/')
+      }, 3000)
+
+    } else {
+      toast.error("Login Failed, Please try again")
+    }
   };
 
   const handleTogglePasswordVisibility = () => {
@@ -37,6 +60,7 @@ export default function SignIn() {
 
   return (
     <ThemeProvider theme={defaultTheme}>
+      <ToastContainer/>
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <Box
@@ -53,7 +77,7 @@ export default function SignIn() {
           <Typography component="h1" variant="h5">
             Sign in
           </Typography>
-          <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+          <Box component="form" onSubmit={handleSubmit} sx={{ mt: 1 }}>
             <TextField
               margin="normal"
               required
@@ -62,6 +86,7 @@ export default function SignIn() {
               label="Mobile number"
               name="Mobilenumber"
               autoComplete="Mobile number"
+              type="number"
             />
             <Grid item xs={12}>
               <Typography variant="body2" color="textSecondary">
