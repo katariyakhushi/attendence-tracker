@@ -25,10 +25,7 @@ export default function SignUp() {
     const [showPassword, setShowPassword] = React.useState(false);
     const [showPassword1, setShowPassword1] = React.useState(false);
 
-    const togglePasswordVisibility = () => {
-        setShowPassword((prev) => !prev);
-    };
-
+ 
     const togglePasswordVisibility1 = () => {
         setShowPassword1((prev) => !prev);
     };

@@ -7,16 +7,18 @@ import Typography from '@mui/material/Typography';
 import Menu from '@mui/material/Menu';
 import MenuIcon from '@mui/icons-material/Menu';
 import Container from '@mui/material/Container';
-import Avatar from '@mui/material/Avatar';
+
 import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
 import { useNavigate } from "react-router-dom";
 import Badge from '@mui/material/Badge';
-import MailOutlineSharpIcon from '@mui/icons-material/MailOutlineSharp';
-import AccountCircleSharpIcon from '@mui/icons-material/AccountCircleSharp';
 import MailLockIcon from '@mui/icons-material/MailLock';
+import usericon from '../assets/usericon.webp';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import ExitToAppIcon from '@mui/icons-material/ExitToApp';
+
 const pages = [
   {
     name: "Home",
@@ -34,11 +36,15 @@ const pages = [
 const settings = [
   {
     name: "Profile",
-    url: "/profile"
+    url: "/profile",
+    icon: <AccountCircleIcon fontSize="small" style={{ fontSize: '20px', marginRight: '5px' }} />,
   },
   {
     name: "Logout",
-    url: "/"
+    url: "/",
+    icon: <ExitToAppIcon fontSize="small" style={{ fontSize: '20px', marginRight: '5px' }} />,
+
+
   },
 ];
 
@@ -66,7 +72,7 @@ function ResponsiveAppBar() {
   return (
     <AppBar position="static" >
       <Container maxWidth="xl">
-        <Toolbar disableGutters sx={{ margin: { marginRight:"30px" } }}>
+        <Toolbar disableGutters sx={{ margin: { marginRight: "30px" } }}>
           <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
           <Typography
             variant="h6"
@@ -167,7 +173,16 @@ function ResponsiveAppBar() {
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
 
-                <AccountCircleSharpIcon sx={{ fontSize: 45 }} />
+
+                <img
+                  src={usericon}
+
+                  alt="Company Logo"
+                  className="logo mr-3"
+                  width={45}
+                  height={45}
+                />
+
               </IconButton>
             </Tooltip>
 
@@ -188,10 +203,10 @@ function ResponsiveAppBar() {
               onClose={handleCloseUserMenu}
             >
               {settings.map((setting) => (
-                <MenuItem key={setting.name} onClick={() => {
+                <MenuItem key={setting.name} alignItems="center" onClick={() => {
                   navigate(setting.url)
                 }}>
-                  <Typography textAlign="center">{setting.name}</Typography>
+                  <Typography variant="body1" textAlign="center" style={{ fontSize: '18px', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '10px' }}>{setting.icon}{setting.name}</Typography>
                 </MenuItem>
               ))}
             </Menu>

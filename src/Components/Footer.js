@@ -27,8 +27,8 @@ const Footer = () => {
               <AdbIcon sx={{ display: { mr: 1 } }} />
               Attendance Tracker
             </Typography>
-            <Typography mt="30px" style={{ color: '#fff' }}>
-              Two or three lines of company information can go here.
+            <Typography mt="10px" style={{ color: '#fff' }}>
+            "Efficient React-based Candidate Attendance System with Secure Sign-up, User-friendly Interface, and Real-time Attendance Tracking."
             </Typography>
           </Grid>
 
@@ -45,7 +45,7 @@ const Footer = () => {
           </Grid>
 
           <Grid item xs={12} sm={2}>
-            <Typography variant="h6" style={{ fontWeight: 'bold', color: '#fff' }}>
+            <Typography variant="h6" style={{ fontWeight: 'bold', color: '#fff' ,marginBottom: '10px'}}>
               Follow Us
             </Typography>
             <Link href="#" color="inherit" target="_blank" rel="noopener" style={{ marginRight: '10px' }}>

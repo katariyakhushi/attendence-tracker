@@ -31,10 +31,7 @@ function checkPassword(password) {
 }
 
 function checkMobileNumber(number) {
-    if (number.length !== 10) {
-        return false;
-    }
-    return true;
+    return number.length === 10;
 }
 
 export default function SignUp() {

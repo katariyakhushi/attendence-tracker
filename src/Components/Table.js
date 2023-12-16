@@ -20,6 +20,8 @@ import SearchIcon from '@mui/icons-material/Search';
 import Pagination from '@mui/material/Pagination';
 import KeyboardDoubleArrowLeftSharpIcon from '@mui/icons-material/KeyboardDoubleArrowLeftSharp';
 import KeyboardDoubleArrowRightSharpIcon from '@mui/icons-material/KeyboardDoubleArrowRightSharp';
+import moment from "moment";
+import backgroundimage from '../assets/backgroundimage.avif';
 
 const AttendanceTracker = () => {
   const recordsPerPage = 10;
@@ -66,13 +68,41 @@ const AttendanceTracker = () => {
     } else {
       updatedRecords[index].startTime = currentDate.toLocaleString();
     }
-
     updatedRecords[index].isSwipedOut = !updatedRecords[index].isSwipedOut;
     setAttendanceRecords(updatedRecords);
+
+    const selectedDateByUser = moment(selectedDate).format('YYYY-MM-DD');
+    const attendanceRecordsInStorage = JSON.parse(localStorage.getItem(selectedDateByUser)) || [];
+
+    if(attendanceRecordsInStorage.length > 0) {
+      localStorage.setItem(selectedDateByUser, JSON.stringify(updatedRecords));
+    } else {
+      localStorage.setItem(selectedDateByUser, JSON.stringify(initialData));
+      setAttendanceRecords(initialData);
+    }
   };
 
+  useEffect(() => {
+    const selectedDateByUser = moment(selectedDate).format('YYYY-MM-DD');
+    const attendanceRecords = JSON.parse(localStorage.getItem(selectedDateByUser)) || [];
+
+    if(attendanceRecords.length > 0) {
+      console.log("record present")
+      setAttendanceRecords(attendanceRecords);
+    } else {
+      localStorage.setItem(selectedDateByUser, JSON.stringify(initialData));
+      console.log("record not present")
+      setAttendanceRecords(initialData);
+    }
+  }, [selectedDate]);
+
+
   return (
-    <Box display="flex" flexDirection="column" alignItems="center" marginTop={5}>
+    <Box display="flex" flexDirection="column" alignItems="center" marginTop={5}  style={{
+      backgroundimage: `url(${backgroundimage})`, // Set the background image
+      backgroundSize: 'cover',
+      backgroundPosition: 'center',
+    }}>
       <Typography variant="h3" marginBottom="50px">
         Attendance Tracker
       </Typography>
