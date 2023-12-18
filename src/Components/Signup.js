@@ -34,7 +34,7 @@ function checkMobileNumber(number) {
     return number.length === 10;
 }
 
-export default function SignUp() {
+export default function SignUp({setPhone}) {
 
     const [passwordError, setPasswordError] = React.useState(false);
     const [mobileError, setMobileError] = React.useState(false);
@@ -62,6 +62,15 @@ export default function SignUp() {
             setPasswordError(false);
         }
 
+        setPhone({
+            email: data.get('email'),
+            password: data.get('password'),
+            number: data.get('Number'),
+            dob: data.get('DOB'),
+            firstName: data.get('firstName'),
+            lastName: data.get('lastName')
+        })
+
         //Check if Number is already present in local storage with data.get('Number')
         if (localStorage.getItem(Number)) {
             toast.error('Oops! Already registered, please login');
@@ -72,8 +81,10 @@ export default function SignUp() {
         localStorage.setItem(data.get('Number'), JSON.stringify({
             email: data.get('email'),
             password: data.get('password'),
-            Number: data.get('Number'),
-            DOB: data.get('DOB'),
+            number: data.get('Number'),
+            dob: data.get('DOB'),
+            firstName: data.get('firstName'),
+            lastName: data.get('lastName')
         }));
 
         //Redirect to login page
@@ -134,6 +145,7 @@ export default function SignUp() {
                                     label="Email Address"
                                     name="email"
                                     autoComplete="email"
+                                    type={"email"}
                                 />
                             </Grid>
                             <Grid item xs={12}>

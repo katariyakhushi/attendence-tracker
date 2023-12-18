@@ -22,11 +22,11 @@ import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 const pages = [
   {
     name: "Home",
-    url: "/"
+    url: "/dashboard"
   },
   {
     name: "Attendence Info",
-    url: "/"
+    url: "/dashboard"
   },
   {
     name: "Profile",
@@ -48,7 +48,7 @@ const settings = [
   },
 ];
 
-function ResponsiveAppBar() {
+function ResponsiveAppBar({phone}) {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
@@ -121,7 +121,11 @@ function ResponsiveAppBar() {
             >
               {pages.map((page) => (
                 <MenuItem key={page.name} onClick={() => {
-                  navigate(page.url)
+                  navigate(page.url, {
+                    state: {
+                      phone: phone
+                    }
+                  })
                 }}>
                   <Typography textAlign="center">{page.name}</Typography>
                 </MenuItem>
@@ -204,7 +208,11 @@ function ResponsiveAppBar() {
             >
               {settings.map((setting) => (
                 <MenuItem key={setting.name} alignItems="center" onClick={() => {
-                  navigate(setting.url)
+                  navigate(setting.url, {
+                    state: {
+                      phone: phone
+                    }
+                  })
                 }}>
                   <Typography variant="body1" textAlign="center" style={{ fontSize: '18px', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '10px' }}>{setting.icon}{setting.name}</Typography>
                 </MenuItem>

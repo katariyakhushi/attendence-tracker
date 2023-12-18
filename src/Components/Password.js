@@ -17,15 +17,41 @@ import InputAdornment from '@mui/material/InputAdornment';
 import IconButton from '@mui/material/IconButton';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
+import {useEffect} from "react";
 
 
 const defaultTheme = createTheme();
 
-export default function SignUp() {
+export default function Password({phone}) {
     const [showPassword, setShowPassword] = React.useState(false);
     const [showPassword1, setShowPassword1] = React.useState(false);
 
- 
+    const [formData, setFormData] = React.useState({
+        dob: "",
+        email: "",
+        firstName: "",
+        lastName: "",
+        number: "",
+        password: "",
+    });
+
+    useEffect(() => {
+        // Set form data from phone or phoneFromState
+        setFormData({
+            dob: phone.dob || null,
+            email: phone.email || "",
+            firstName: phone.firstName || "",
+            lastName: phone.lastName || "",
+            number: phone.number || null,
+            password: phone.password || "",
+        });
+        console.log("phoneFromState", phone)
+    }, [phone]);
+
+    const togglePasswordVisibility = () => {
+        setShowPassword((prev) => !prev);
+    };
+
     const togglePasswordVisibility1 = () => {
         setShowPassword1((prev) => !prev);
     };
@@ -58,7 +84,7 @@ export default function SignUp() {
                     <Typography component="h1" variant="h5">
                         Create new password
                     </Typography>
-                    <Box component="form" noValidate onSubmit={handleSubmit} sx={{mt: 3}}>
+                    <Box component="form" onSubmit={handleSubmit} sx={{mt: 3}}>
                         <Grid container spacing={2}>
                             <Grid item xs={12}>
                                 <TextField
@@ -73,7 +99,7 @@ export default function SignUp() {
                                     InputProps={{
                                         endAdornment: (
                                             <InputAdornment position="end">
-                                                <IconButton onClick={togglePasswordVisibility} edge="end">
+                                                <IconButton edge="end" onClick={togglePasswordVisibility}>
                                                     {showPassword ? <VisibilityOffIcon/> : <VisibilityIcon/>}
                                                 </IconButton>
                                             </InputAdornment>
@@ -138,11 +164,11 @@ export default function SignUp() {
                             variant="contained"
                             sx={{mt: 3, mb: 2}}
                         >
-                            Sign Up
+                            Change Password
                         </Button>
                         <Grid container justifyContent="flex-end">
                             <Grid item>
-                                <Link href="/Signin" variant="body2">
+                                <Link href="/signin" variant="body2">
                                     Already have an account? Sign in
                                 </Link>
                             </Grid>

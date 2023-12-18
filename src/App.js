@@ -1,30 +1,23 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {BrowserRouter as Router, Routes, Route} from 'react-router-dom';
-import Signup from './Components/Signup'; // Adjust the path as needed
+import Signup from './Components/Signup';
 import MainPage from './Components/MainPage';
 import Signin from './Components/Signin';
-
-import Sidebar from './Components/Sidebar';
-import Topbar from './Components/Topbar';
-import Selectbar from './Components/Selectbar';
-import Table from './Components/Table';
 import Password from './Components/Password';
 import Profile from './Components/Profile';
-import Footer from './Components/Footer';
+
 function App() {
+
+    const [phone, setPhone] = useState({});
+
     return (
         <Router>
             <Routes>
-                <Route path="/" element={<MainPage/>}/>
-                <Route path="/signup" element={<Signup/>}/>
-                <Route path="/signin" element={<Signin/>}/>
-                <Route path="/topbar" element={<Topbar/>}/>
-                <Route path="/sidebar" element={<Sidebar/>}/>
-                <Route path="/selectbar" element={<Selectbar/>}/>
-                <Route path="/table" element={<Table/>}/>
-                <Route path="/changePassword" element={<Password/>}/>
-                <Route path="/profile" element={<Profile/>}></Route>
-                <Route path="/footer" element={<Footer/>}></Route>
+                <Route path="/dashboard" element={<MainPage phone={phone} setPhone={setPhone}/>}/>
+                <Route path="/" element={<Signup phone={phone} setPhone={setPhone}/>}/>
+                <Route path="/signin" element={<Signin phone={phone} setPhone={setPhone}/>}/>
+                <Route path="/changePassword" element={<Password phone={phone}/>}/>
+                <Route path="/profile" element={<Profile phone={phone}/>}></Route>
             </Routes>
         </Router>
     );

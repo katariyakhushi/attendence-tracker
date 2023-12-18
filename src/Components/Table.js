@@ -22,6 +22,9 @@ import KeyboardDoubleArrowLeftSharpIcon from '@mui/icons-material/KeyboardDouble
 import KeyboardDoubleArrowRightSharpIcon from '@mui/icons-material/KeyboardDoubleArrowRightSharp';
 import moment from "moment";
 import backgroundimage from '../assets/backgroundimage.avif';
+import {toast, ToastContainer} from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css'
+import Avatar from "@mui/material/Avatar";
 
 const AttendanceTracker = () => {
   const recordsPerPage = 10;
@@ -64,9 +67,11 @@ const AttendanceTracker = () => {
     const currentDate = new Date();
 
     if (updatedRecords[index].isSwipedOut) {
-      updatedRecords[index].endTime = currentDate.toLocaleString();
+        toast.info("Attendance Marked Successfully")
+        updatedRecords[index].endTime = currentDate.toLocaleString();
     } else {
-      updatedRecords[index].startTime = currentDate.toLocaleString();
+        toast.info("Attendance Capture Started!")
+        updatedRecords[index].startTime = currentDate.toLocaleString();
     }
     updatedRecords[index].isSwipedOut = !updatedRecords[index].isSwipedOut;
     setAttendanceRecords(updatedRecords);
@@ -103,6 +108,7 @@ const AttendanceTracker = () => {
       backgroundSize: 'cover',
       backgroundPosition: 'center',
     }}>
+        <ToastContainer/>
       <Typography variant="h3" marginBottom="50px">
         Attendance Tracker
       </Typography>
@@ -202,6 +208,15 @@ const AttendanceTracker = () => {
                 >
                   End Time
                 </TableCell>
+                  <TableCell
+                      style={{
+                          fontWeight: 'bold',
+                          textAlign: 'center',
+                          borderBottom: '1px solid #ddd',
+                      }}
+                  >
+                      Duration (in minutes)
+                  </TableCell>
                 <TableCell
                   style={{
                     fontWeight: 'bold',
@@ -219,14 +234,21 @@ const AttendanceTracker = () => {
                   <TableCell style={{ textAlign: 'center', borderBottom: '1px solid #ddd' }}>
                     {record.userId}
                   </TableCell>
-                  <TableCell style={{ textAlign: 'center', borderBottom: '1px solid #ddd' }}>
+                  <TableCell style={{ display: 'flex', alignItems: 'center', borderBottom: '1px solid #ddd' }}>
+                    <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+                      {record.userName.charAt(0).toUpperCase()+index}
+                    </Avatar>
                     {record.userName}
                   </TableCell>
                   <TableCell style={{ textAlign: 'center', borderBottom: '1px solid #ddd' }}>
-                    {record.startTime}
+                    {record.startTime || "Yet to start"}
                   </TableCell>
                   <TableCell style={{ textAlign: 'center', borderBottom: '1px solid #ddd' }}>
-                    {record.endTime}
+                    {record.endTime || "Yet to end"}
+                  </TableCell>
+                  <TableCell style={{ textAlign: 'center', borderBottom: '1px solid #ddd' }}>
+                    {/*  End time format : 18/12/2023, 00:39:29*/}
+                    {record && record.endTime ? moment(record.endTime, "DD/MM/YYYY, HH:mm:ss").diff(moment(record.startTime, "DD/MM/YYYY, HH:mm:ss"), 'minute') : "N/A"}
                   </TableCell>
                   <TableCell style={{ textAlign: 'center', borderBottom: '1px solid #ddd' }}>
                     <Stack
